@@ -7,7 +7,7 @@ variable "root_id" {
 
 variable "root_name" {
   type    = string
-  default = "Version 6 LZ"
+  default = "Version_6_LZ"
 }
 
 # Declare the Azure landing zones Terraform module
