@@ -1,23 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.107"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-}
-
-# Get the current client configuration from the AzureRM provider.
-# This is used to populate the root_parent_id variable with the
-# current Tenant ID used as the ID for the "Tenant Root Group"
-# management group.
-
-data "azurerm_client_config" "core" {}
-
 # Use variables to customize the deployment
 
 variable "root_id" {
@@ -28,10 +8,6 @@ variable "root_id" {
 variable "root_name" {
   type    = string
   default = "Version 6 LZ"
-}
-
-variable "default_location" {
-  type = string
 }
 
 # Declare the Azure landing zones Terraform module
