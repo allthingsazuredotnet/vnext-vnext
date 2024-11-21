@@ -1,0 +1,28 @@
+{
+  "name": "Deploy-Blob-Diag",
+  "type": "Microsoft.Authorization/policyAssignments",
+  "apiVersion": "2019-09-01",
+  "properties": {
+    "description": "Deploys the diagnostic settings for Blob Services to stream resource logs to a Log Analytics workspace when any blob Service which is missing this diagnostic settings is created or updated.",
+    "displayName": "Configure diagnostic settings for Blob Services to Log Analytics workspace",
+    "notScopes": [],
+    "parameters": {
+      "LogAnalytics": {
+        "value": "/subscriptions/ed471401-73c9-4910-aebb-ff80c112e496/resourcegroups/bslz-mgmt/providers/microsoft.operationalinsights/workspaces/bslz-la"
+      },
+      "profileName": {
+        "value": "setByPolicy-LogAnalytics"
+      },
+      "logsEnabled": {
+        "value": true
+      }
+    },
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b4fe1a3b-0715-4c6c-a5ea-ffc33cf823cb",
+    "scope": "${current_scope_resource_id}",
+    "enforcementMode": "DeployIfNotExists"
+  },
+  "location": "${default_location}",
+  "identity": {
+    "type": "SystemAssigned"
+  }
+}
