@@ -1,0 +1,18 @@
+{
+  "name": "Deploy-Storage-Diag",
+  "type": "Microsoft.Authorization/policyAssignments",
+  "apiVersion": "2019-09-01",
+  "properties": {
+    "description": "Deploys the diagnostic settings for Storage accounts to stream resource logs to a Log Analytics workspace when any storage accounts which is missing this diagnostic settings is created or updated.",
+    "displayName": "Configure diagnostic settings for Storage Accounts to Log Analytics workspace",
+    "notScopes": [],
+    "parameters": {},
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a6fb4358-5bf4-4ad7-ba82-2cd2f41ce5e9",
+    "scope": "${current_scope_resource_id}",
+    "enforcementMode": "DeployIfNotExists"
+  },
+  "location": "${default_location}",
+  "identity": {
+    "type": "None"
+  }
+}
