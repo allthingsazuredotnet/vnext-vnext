@@ -6,8 +6,12 @@
     "description": "Deploys the diagnostic settings for Storage accounts to stream resource logs to a Log Analytics workspace when any storage accounts which is missing this diagnostic settings is created or updated.",
     "displayName": "Configure diagnostic settings for Storage Accounts to Log Analytics workspace",
     "notScopes": [],
-    "parameters": {},
-    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a6fb4358-5bf4-4ad7-ba82-2cd2f41ce5e9",
+    "parameters": {
+      "LogAnalytics": {
+        "value": "/subscriptions/ed471401-73c9-4910-aebb-ff80c112e496/resourcegroups/bslz-mgmt/providers/microsoft.operationalinsights/workspaces/bslz-la"
+      }
+    },
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/59759c62-9a22-4cdf-ae64-074495983fef",
     "scope": "${current_scope_resource_id}",
     "enforcementMode": "DeployIfNotExists"
   },
