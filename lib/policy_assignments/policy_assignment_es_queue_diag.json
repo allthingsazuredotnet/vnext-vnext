@@ -1,0 +1,28 @@
+{
+  "name": "Deploy-Queue-Diag",
+  "type": "Microsoft.Authorization/policyAssignments",
+  "apiVersion": "2019-09-01",
+  "properties": {
+    "description": "Deploys the diagnostic settings for Queue Services to stream resource logs to a Log Analytics workspace when any queue Service which is missing this diagnostic settings is created or updated. Note: This policy is not triggered upon Storage Account creation and requires creation of a remediation task in order to update for the account.",
+    "displayName": "Configure diagnostic settings for Queue Services to Log Analytics workspace",
+    "notScopes": [],
+    "parameters": {
+      "LogAnalytics": {
+        "value": "/subscriptions/ed471401-73c9-4910-aebb-ff80c112e496/resourcegroups/bslz-mgmt/providers/microsoft.operationalinsights/workspaces/bslz-la"
+      },
+      "profileName": {
+        "value": "setByPolicy-LogAnalytics"
+      },
+      "logsEnabled": {
+        "value": true
+      }
+    },
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/7bd000e3-37c7-4928-9f31-86c4b77c5c45",
+    "scope": "${current_scope_resource_id}",
+    "enforcementMode": "DeployIfNotExists"
+  },
+  "location": "${default_location}",
+  "identity": {
+    "type": "SystemAssigned"
+  }
+}

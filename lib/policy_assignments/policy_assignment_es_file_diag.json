@@ -1,0 +1,28 @@
+{
+  "name": "Deploy-File-Diag",
+  "type": "Microsoft.Authorization/policyAssignments",
+  "apiVersion": "2019-09-01",
+  "properties": {
+    "description": "Deploys the diagnostic settings for File Services to stream resource logs to a Log Analytics workspace when any file Service which is missing this diagnostic settings is created or updated.",
+    "displayName": "Configure diagnostic settings for File Services to Log Analytics workspace",
+    "notScopes": [],
+    "parameters": {
+      "LogAnalytics": {
+        "value": "/subscriptions/ed471401-73c9-4910-aebb-ff80c112e496/resourcegroups/bslz-mgmt/providers/microsoft.operationalinsights/workspaces/bslz-la"
+      },
+      "profileName": {
+        "value": "setByPolicy-LogAnalytics"
+      },
+      "logsEnabled": {
+        "value": true
+      }
+    },
+    "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/25a70cc8-2bd4-47f1-90b6-1478e4662c96",
+    "scope": "${current_scope_resource_id}",
+    "enforcementMode": "DeployIfNotExists"
+  },
+  "location": "${default_location}",
+  "identity": {
+    "type": "SystemAssigned"
+  }
+}
