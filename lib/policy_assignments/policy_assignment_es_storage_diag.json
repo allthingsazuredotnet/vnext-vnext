@@ -9,6 +9,9 @@
     "parameters": {
       "LogAnalytics": {
         "value": "/subscriptions/ed471401-73c9-4910-aebb-ff80c112e496/resourcegroups/bslz-mgmt/providers/microsoft.operationalinsights/workspaces/bslz-la"
+      },
+      "profileName": {
+        "value": "setByPolicy-LogAnalytics"
       }
     },
     "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/59759c62-9a22-4cdf-ae64-074495983fef",
