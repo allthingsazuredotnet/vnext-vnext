@@ -1,0 +1,95 @@
+{
+    "name": "Deploy-Storage-Diags",
+    "type": "Microsoft.Authorization/policySetDefinitions",
+    "apiVersion": "2021-06-01",
+    "scope": null,
+    "properties": {
+        "policyType": "Custom",
+        "displayName": "Deploy diagnostic settings for Storage Accounts",
+        "description": "Enables the diagnostic settings for Storage Accounts to send account, file, table, queue and blob storage diagnostic settings to the central Log Analytics Workspace.",
+        "metadata": {
+            "version": "1.0.0",
+            "category": "General"
+        },
+        "parameters": {
+            "LogAnalytics": {
+                "type": "String",
+                "metadata": {
+                    "displayName": "Log Analytics Workspace",
+                    "description": "The Log Analytics Workspace to send the diagnostic settings to."
+                }
+            },
+            "profileName": {
+                "type": "String",
+                "metadata": {
+                    "displayName": "Profile Name",
+                    "description": "The name of the diagnostic settings profile."
+                },
+                "defaultValue": "setByPolicy-LogAnalytics"
+            }
+        },
+        "policyDefinitions": [
+            {
+                "policyDefinitionReferenceId": "Deploy-Table-Diag",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/2fb86bf3-d221-43d1-96d1-2434af34eaa0",
+                "parameters": {
+                    "LogAnalytics": {
+                        "value": "[parameters('LogAnalytics')]"
+                    },
+                    "profileName": {
+                        "value": "[parameters('profileName')]"
+                    }
+                }
+            },
+            {
+                "policyDefinitionReferenceId": "Deploy-Storage-Diag",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/59759c62-9a22-4cdf-ae64-074495983fef",
+                "parameters": {
+                    "LogAnalytics": {
+                        "value": "[parameters('LogAnalytics')]"
+                    },
+                    "profileName": {
+                        "value": "[parameters('profileName')]"
+                    }
+                }
+            },
+            {
+                "policyDefinitionReferenceId": "Deploy-Queue-Diag",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/7bd000e3-37c7-4928-9f31-86c4b77c5c45",
+                "parameters": {
+                    "LogAnalytics": {
+                        "value": "[parameters('LogAnalytics')]"
+                    },
+                    "profileName": {
+                        "value": "[parameters('profileName')]"
+                    }
+                }
+            },
+            {
+                "policyDefinitionReferenceId": "Deploy-File-Diag",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/25a70cc8-2bd4-47f1-90b6-1478e4662c96",
+                "parameters": {
+                    "LogAnalytics": {
+                        "value": "[parameters('LogAnalytics')]"
+                    },
+                    "profileName": {
+                        "value": "[parameters('profileName')]"
+                    }
+                }
+            },
+            {
+                "policyDefinitionReferenceId": "Deploy-Blob-Diag",
+                "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/b4fe1a3b-0715-4c6c-a5ea-ffc33cf823cb",
+                "parameters": {
+                    "LogAnalytics": {
+                        "value": "[parameters('LogAnalytics')]"
+                    },
+                    "profileName": {
+                        "value": "[parameters('profileName')]"
+                    }
+                }
+            }
+        ],
+        "policyDefinitionGroups": null
+    }
+}
