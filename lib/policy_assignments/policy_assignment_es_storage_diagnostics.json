@@ -3,8 +3,8 @@
   "type": "Microsoft.Authorization/policyAssignments",
   "apiVersion": "2019-09-01",
   "properties": {
-    "description": "Contains the core policies applicable to the org",
-    "displayName": "Ensure mandatory tagging is applied to both Resources and Resource Groups",
+    "description": "Deploys the diagnostic settings for the storage accounts, tables, queues, files and blob services to stream resource logs to a Log Analytics workspace when any table Service which is missing this diagnostic settings is created or updated",
+    "displayName": "Deploy diagnostic settings for Storage Accounts, queues, files, tables, and blobs to Log Analytics workspace",
     "notScopes": [],
     "parameters": {
       "logAnalytics": {
