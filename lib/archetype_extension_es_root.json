@@ -1,8 +1,8 @@
 {
   "extend_es_root": {
     "policy_assignments":[],
-    "policy_definitions": ["Deploy-Queue-Diag", "Deploy-Table-Diag", "Deploy-Storage-Diag", "Deploy-File-Diag", "Deploy-Blob-Diag"],
-    "policy_set_definitions": ["Deploy-Storage-Diagnostics"],
+    "policy_definitions": [],
+    "policy_set_definitions": ["Deploy-Storage-Diags"],
     "role_definitions": [],
     "archetype_config": {},
       "access_control": {}
