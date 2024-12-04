@@ -31,4 +31,5 @@ module "enterprise_scale" {
   library_path                   = "${path.root}/lib"
   deploy_management_resources    = true
   configure_management_resources = local.configure_management_resources
+  disable_telemetry              = true
 }
