@@ -35,3 +35,15 @@ variable "root_parent_management_group_id" {
   default     = ""
   description = "The identifier of the Tenant Root Management Group, if left blank will use the tenant id. (e.g '00000000-0000-0000-0000-000000000000')|3|azure_name"
 }
+
+variable "management_resources_location" {
+  type    = string
+  default = "uksouth"
+}
+
+variable "management_resources_tags" {
+  type = map(string)
+  default = {
+    demo_type = "deploy_management_resources_custom"
+  }
+}
