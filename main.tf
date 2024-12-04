@@ -29,5 +29,5 @@ module "enterprise_scale" {
   root_id        = var.root_id
   root_name      = var.root_name
   library_path   = "${path.root}/lib"
-
+  configure_management_resources = local.configure_management_resources
 }
