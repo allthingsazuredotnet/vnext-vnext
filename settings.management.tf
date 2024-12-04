@@ -10,7 +10,7 @@ locals {
         enable_mdfc_defender_for_sql_query_collection_for_security_research = false
       }
       log_analytics = {
-        enabled = true
+        enabled = false
         config = {
           retention_in_days          = 30
           enable_monitoring_for_vm   = true
