@@ -25,9 +25,9 @@ module "enterprise_scale" {
     azurerm.management   = azurerm
   }
 
-  root_parent_id = data.azurerm_client_config.core.tenant_id
-  root_id        = var.root_id
-  root_name      = var.root_name
-  library_path   = "${path.root}/lib"
+  root_parent_id                 = data.azurerm_client_config.core.tenant_id
+  root_id                        = var.root_id
+  root_name                      = var.root_name
+  library_path                   = "${path.root}/lib"
   configure_management_resources = local.configure_management_resources
 }
