@@ -47,3 +47,8 @@ variable "management_resources_tags" {
     demo_type = "deploy_management_resources_custom"
   }
 }
+
+variable "valheim_rg_name" {
+  type    = string
+  default = "rg-vh-prod-uksouth-01"
+}
