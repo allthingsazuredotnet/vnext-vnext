@@ -1,3 +1,10 @@
+resource "azurerm_public_ip" "valheimip" {
+  name                = "valheim-pip"
+  location            = azurerm_resource_group.valheimrg.location
+  resource_group_name = azurerm_resource_group.valheimrg.name
+  allocation_method   = "Static"
+}
+
 resource "azurerm_network_interface" "valheim" {
   name                = "valheim-nic"
   location            = azurerm_resource_group.valheimrg.location
@@ -7,10 +14,11 @@ resource "azurerm_network_interface" "valheim" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.valheimsubnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.valheimip.id
   }
 }
 
-resource "azurerm_virtual_machine" "example" {
+resource "azurerm_virtual_machine" "valheim" {
   name                  = "valheimserver"
   location              = azurerm_resource_group.valheimrg.location
   resource_group_name   = azurerm_resource_group.valheimrg.name

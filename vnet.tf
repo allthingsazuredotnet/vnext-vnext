@@ -15,4 +15,27 @@ resource "azurerm_subnet" "valheimsubnet" {
   resource_group_name  = azurerm_resource_group.valheimrg.name
   virtual_network_name = azurerm_virtual_network.valheimvnet.name
   address_prefixes     = ["192.168.0.0/26"]
-} 
+}
+
+resource "azurerm_network_security_group" "valheimnsg" {
+  name                = "valheim-nsg"
+  resource_group_name = azurerm_resource_group.valheimrg.name
+  location            = azurerm_resource_group.valheimrg.location
+
+  security_rule {
+    name                       = "sshinbound"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "194.164.227.48/32"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_subnet_network_security_group_association" "valheimnsg" {
+  subnet_id                 = azurerm_subnet.valheimsubnet.id
+  network_security_group_id = azurerm_network_security_group.valheimnsg.id
+}
