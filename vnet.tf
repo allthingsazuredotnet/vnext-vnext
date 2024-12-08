@@ -45,7 +45,7 @@ resource "azurerm_network_security_group" "valheimnsg" {
     destination_address_prefix = "*"
   }
   security_rule {
-    name                       = "valheiminboundtcp"
+    name                       = "valheiminboundudp"
     priority                   = 120
     direction                  = "Inbound"
     access                     = "Allow"
