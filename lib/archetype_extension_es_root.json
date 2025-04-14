@@ -2,7 +2,7 @@
   "extend_es_root": {
     "policy_assignments":[],
     "policy_definitions": [],
-    "policy_set_definitions": ["Deploy-Storage-Diags"],
+    "policy_set_definitions": ["Deploy-Storage-Diags", "Inherit-Subscription-Tag"],
     "role_definitions": [],
     "archetype_config": {},
       "access_control": {}

@@ -1,0 +1,150 @@
+{
+  "name": "Inherit-Subscription-Tag",
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "apiVersion": "2021-06-01",
+  "scope": null,
+  "properties": {
+    "displayName": "Inherit tags from subscription to all resource groups and resources",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Adds or replaces the specified tag and value from the containing subscription when any resource is created or updated.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Tags"
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "notequals": "Microsoft.Resources/subscriptions",
+            "field": "type"
+          },
+          {
+            "anyof": [
+              {
+                "anyof": [
+                  {
+                    "field": "[concat('tags[', parameters('tagName1'), ']')]",
+                    "exists": "false"
+                  },
+                  {
+                    "field": "[concat('tags[', parameters('tagName1'), ']')]",
+                    "notEquals": "[subscription().tags[parameters('tagName1')]]"
+                  }
+                ]
+              },
+              {
+                "anyof": [
+                  {
+                    "field": "[concat('tags[', parameters('tagName2'), ']')]",
+                    "exists": "false"
+                  },
+                  {
+                    "field": "[concat('tags[', parameters('tagName2'), ']')]",
+                    "notEquals": "[subscription().tags[parameters('tagName2')]]"
+                  }
+                ]
+              },
+              {
+                "anyof": [
+                  {
+                    "field": "[concat('tags[', parameters('tagName3'), ']')]",
+                    "exists": "false"
+                  },
+                  {
+                    "field": "[concat('tags[', parameters('tagName3'), ']')]",
+                    "notEquals": "[subscription().tags[parameters('tagName3')]]"
+                  }
+                ]
+              },
+              {
+                "anyof": [
+                  {
+                    "field": "[concat('tags[', parameters('tagName4'), ']')]",
+                    "exists": "false"
+                  },
+                  {
+                    "field": "[concat('tags[', parameters('tagName4'), ']')]",
+                    "notEquals": "[subscription().tags[parameters('tagName4')]]"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "modify",
+        "details": {
+          "roleDefinitionIds": [
+            "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "operations": [
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName1'), ']')]",
+              "value": "[subscription().tags[parameters('tagName1')]]"
+            },
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName2'), ']')]",
+              "value": "[subscription().tags[parameters('tagName2')]]"
+            },
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName3'), ']')]",
+              "value": "[subscription().tags[parameters('tagName3')]]"
+            },
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName4'), ']')]",
+              "value": "[subscription().tags[parameters('tagName4')]]"
+            }
+          ]
+        }
+      }
+    },
+    "parameters": {
+      "tagName1": {
+        "type": "String",
+        "metadata": {
+          "displayName": "cost-center",
+          "description": "cost-center"
+        },
+        "defaultValue": "group:account:cost-center"
+      },
+      "tagName2": {
+        "type": "String",
+        "metadata": {
+          "displayName": "cmdb-app-sys-id",
+          "description": "cmdb-app-sys-id"
+        },
+        "defaultValue": "group:account:cmdb-app-sys-id"
+      },
+      "tagName3": {
+        "type": "String",
+        "metadata": {
+          "displayName": "opco-code",
+          "description": "opco-code"
+        },
+        "defaultValue": "group:account:opco-code"
+      },
+      "tagName4": {
+        "type": "String",
+        "metadata": {
+          "displayName": "account-type",
+          "description": "account-type"
+        },
+        "defaultValue": "group:account:account-type"
+      },
+      "tagName5": {
+        "type": "String",
+        "metadata": {
+          "displayName": "opinslink",
+          "description": "opinslink"
+        },
+        "defaultValue": "group:account:opinslink"
+      }
+    }
+  }
+}
