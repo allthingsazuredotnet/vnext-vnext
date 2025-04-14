@@ -66,6 +66,10 @@
                   {
                     "field": "[concat('tags[', parameters('tagName4'), ']')]",
                     "notEquals": "[subscription().tags[parameters('tagName4')]]"
+                  },
+                  {
+                    "field": "[concat('tags[', parameters('tagName5'), ']')]",
+                    "notEquals": "[subscription().tags[parameters('tagName5')]]"
                   }
                 ]
               }
@@ -99,6 +103,11 @@
               "operation": "addOrReplace",
               "field": "[concat('tags[', parameters('tagName4'), ']')]",
               "value": "[subscription().tags[parameters('tagName4')]]"
+            },
+            {
+              "operation": "addOrReplace",
+              "field": "[concat('tags[', parameters('tagName5'), ']')]",
+              "value": "[subscription().tags[parameters('tagName5')]]"
             }
           ]
         }
