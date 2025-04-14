@@ -32,4 +32,6 @@ module "enterprise_scale" {
   deploy_management_resources    = true
   configure_management_resources = local.configure_management_resources
   disable_telemetry              = true
+  deploy_corp_landing_zones      = true
+  deploy_online_landing_zones    = true
 }
