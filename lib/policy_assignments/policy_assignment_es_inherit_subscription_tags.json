@@ -1,0 +1,23 @@
+{
+    "name": "Inherit-Subscription-Tag",
+    "type": "Microsoft.Authorization/policyAssignments",
+    "apiVersion": "2019-09-01",
+    "properties": {
+        "description": "Adds or replaces the specified tag and value from the containing subscription when any resource is created or updated.",
+        "displayName": "Inherit Specific Tags from Subscription to Resource Groups and Resources",
+        "notScopes": [],
+        "parameters": {} ,
+        "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Inherit-Subscription-Tag",
+        "nonComplianceMessages": [
+            {
+                "message": "Missing Mandatory Tags"
+              } 
+        ],
+        "scope": "${current_scope_resource_id}",
+        "enforcementMode": null
+    },
+    "location": "${default_location}",
+    "identity": {
+        "type": "SystemAssigned"
+    }
+}
