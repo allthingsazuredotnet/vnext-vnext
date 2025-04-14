@@ -5,7 +5,7 @@
     "properties": {
         "description": "Adds or replaces the specified tag and value from the containing subscription when any resource is created or updated.",
         "displayName": "Inherit Specific Tags from Subscription to Resource Groups and Resources",
-        "notScopes": {},
+        "notScopes": [],
         "parameters": {} ,
         "policyDefinitionId": "${root_scope_resource_id}/providers/Microsoft.Authorization/policyDefinitions/Inherit-Subscription-Tag",
         "nonComplianceMessages": [
