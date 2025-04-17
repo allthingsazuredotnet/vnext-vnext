@@ -14,5 +14,5 @@ resource "azurerm_app_service_plan" "example" {
   }
   per_site_scaling             = false
   maximum_elastic_worker_count = 1
-  zone_redundant               = false
+  zone_redundant               = true
 }
