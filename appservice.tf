@@ -10,7 +10,7 @@ resource "azurerm_app_service_plan" "example" {
   sku {
     tier     = "PremiumV3"
     size     = "P0v3"
-    capacity = 1
+    capacity = 3
   }
   per_site_scaling             = false
   maximum_elastic_worker_count = 1
