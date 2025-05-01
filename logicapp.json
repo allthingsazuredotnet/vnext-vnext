@@ -210,13 +210,7 @@
                         "appidacr": "2"
                     },
                     "body": "@outputs('Compose_alert_payload')",
-                    "authentication": {
-                        "type": "ActiveDirectoryOAuth",
-                        "authority": "https://sts.windows.net/",
-                        "tenant": "8bc3bb99-ff6d-42ef-9b17-1ea52c4db4ed",
-                        "audience": "api://fe05437f-c0ee-4c24-a034-532390fb5e2b",
-                        "clientId": "fe05437f-c0ee-4c24-a034-532390fb5e2b"
-                    },
+                    "authentication": {},
                 "runtimeConfiguration": {
                     "contentTransfer": {
                         "transferMode": "Chunked"
