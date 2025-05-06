@@ -1,4 +1,4 @@
-resource azurerm_resource_group "aiops" {
+resource "azurerm_resource_group" "aiops" {
   name     = "iaggbs-rg-logicapp-aiops-prod-uksouth"
   location = "uksouth"
 }
