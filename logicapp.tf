@@ -10,6 +10,6 @@ resource "azurerm_logic_app_workflow" "aiops" {
 
   // Optional identity block, depends on your setup
   identity {
-    type = "system_assigned"
+    type = "SystemAssigned"
   }
 }
