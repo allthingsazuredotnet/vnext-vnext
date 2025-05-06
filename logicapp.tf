@@ -14,11 +14,11 @@ resource "azurerm_logic_app_workflow" "aiops" {
   }
 }
 
-resource "azurerm_logic_app_trigger_custom" "aiops_http" {
+resource "azurerm_logic_app_trigger_http_request" "aiops_http" {
   name         = "http_trigger"
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
-  body = <<BODY
+  schema = <<SCHEMA
   {
              "Receive_JSON_payload_from_action_group": {
                 "type": "Request",
@@ -91,5 +91,5 @@ resource "azurerm_logic_app_trigger_custom" "aiops_http" {
                 }
             }
   }
-  BODY
+  SCHEMA
 }
