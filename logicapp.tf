@@ -15,7 +15,7 @@ resource "azurerm_logic_app_workflow" "aiops" {
 }
 
 resource "azurerm_logic_app_trigger_http_request" "aiops_http" {
-  name         = "http_trigger"
+  name         = "Receive JSON payload from Azure Monitor"
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
   schema = <<SCHEMA
