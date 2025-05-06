@@ -15,7 +15,7 @@ variable "root_name" {
 
 module "enterprise_scale" {
   source  = "Azure/caf-enterprise-scale/azurerm"
-  version = "6.2.0"
+  version = "6.2.1"
 
   default_location = var.default_location
 
