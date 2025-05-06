@@ -14,10 +14,11 @@ resource "azurerm_logic_app_workflow" "aiops" {
   }
 }
 
-resource "azurerm_logic_app_trigger_http" "aiops_http" {
+resource "azurerm_logic_app_trigger_custom" "aiops_http" {
   name                = "http_trigger"
   location            = azurerm_resource_group.aiops.location
   resource_group_name = azurerm_resource_group.aiops.name
+  logic_app_id = azurerm_logic_app_workflow.aiops.id
 
   body = <<BODY
   {
