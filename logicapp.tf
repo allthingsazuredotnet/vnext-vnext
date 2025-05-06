@@ -20,76 +20,68 @@ resource "azurerm_logic_app_trigger_http_request" "aiops_http" {
 
   schema = <<SCHEMA
   {
-             "Receive_JSON_payload_from_action_group": {
-                "type": "Request",
-                "kind": "Http",
-                "inputs": {
-                    "schema": {
-                        "type": "object",
-                        "properties": {
-                            "schemaId": {
+    "type": "object",
+    "properties": {
+        "schemaId": {
+            "type": "string"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "essentials": {
+                    "type": "object",
+                    "properties": {
+                        "alertId": {
+                            "type": "string"
+                        },
+                        "alertRule": {
+                            "type": "string"
+                        },
+                        "severity": {
+                            "type": "string"
+                        },
+                        "signalType": {
+                            "type": "string"
+                        },
+                        "monitorCondition": {
+                            "type": "string"
+                        },
+                        "monitoringService": {
+                            "type": "string"
+                        },
+                        "alertTargetIDs": {
+                            "type": "array",
+                            "items": {
                                 "type": "string"
-                            },
-                            "data": {
-                                "type": "object",
-                                "properties": {
-                                    "essentials": {
-                                        "type": "object",
-                                        "properties": {
-                                            "alertId": {
-                                                "type": "string"
-                                            },
-                                            "alertRule": {
-                                                "type": "string"
-                                            },
-                                            "severity": {
-                                                "type": "string"
-                                            },
-                                            "signalType": {
-                                                "type": "string"
-                                            },
-                                            "monitorCondition": {
-                                                "type": "string"
-                                            },
-                                            "monitoringService": {
-                                                "type": "string"
-                                            },
-                                            "alertTargetIDs": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                }
-                                            },
-                                            "originAlertId": {
-                                                "type": "string"
-                                            },
-                                            "firedDateTime": {
-                                                "type": "string"
-                                            },
-                                            "resolvedDateTime": {
-                                                "type": "string"
-                                            },
-                                            "description": {
-                                                "type": "string"
-                                            },
-                                            "essentialsVersion": {
-                                                "type": "string"
-                                            },
-                                            "alertContextVersion": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    },
-                                    "alertContext": {
-                                        "type": "object",
-                                        "properties": {}
-                                    }
-                                }
                             }
+                        },
+                        "originAlertId": {
+                            "type": "string"
+                        },
+                        "firedDateTime": {
+                            "type": "string"
+                        },
+                        "resolvedDateTime": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "essentialsVersion": {
+                            "type": "string"
+                        },
+                        "alertContextVersion": {
+                            "type": "string"
                         }
                     }
+                },
+                "alertContext": {
+                    "type": "object",
+                    "properties": {}
                 }
             }
-  }
+        }
+    }
+}
   SCHEMA
 }
