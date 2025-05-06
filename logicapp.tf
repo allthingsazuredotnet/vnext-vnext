@@ -92,9 +92,4 @@ resource "azurerm_logic_app_trigger_custom" "aiops_http" {
             }
   }
   BODY
-
-  // Optional identity block, depends on your setup
-  identity {
-    type = "SystemAssigned"
-  }
 }
