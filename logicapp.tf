@@ -201,7 +201,7 @@ resource "azurerm_logic_app_action_custom" "aiops_read_resource" {
     "inputs": {
         "host": {
         "connection": {
-            "referenceName": "arm"
+            "name": "arm"
         }
         },
         "method": "get",
