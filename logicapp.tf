@@ -166,7 +166,7 @@ resource "azurerm_logic_app_action_custom" "aiops_parse" {
   BODY
 }
 
-resource "azurerm_logic_app_action_custom" "aiops_parse" {
+resource "azurerm_logic_app_action_custom" "aiops_read_resource" {
   name         = "Read a resource"
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
