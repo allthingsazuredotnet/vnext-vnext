@@ -85,3 +85,83 @@ resource "azurerm_logic_app_trigger_http_request" "aiops_http" {
 }
   SCHEMA
 }
+
+
+resource "azurerm_logic_app_trigger_custom" "aiops_parse" {
+  name         = "Parse alert payload"
+  logic_app_id = azurerm_logic_app_workflow.aiops.id
+
+  body = <<BODY
+  {
+  "type": "ParseJson",
+  "inputs": {
+    "content": "@triggerBody()",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "schemaId": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "essentials": {
+              "type": "object",
+              "properties": {
+                "alertId": {
+                  "type": "string"
+                },
+                "alertRule": {
+                  "type": "string"
+                },
+                "severity": {
+                  "type": "string"
+                },
+                "signalType": {
+                  "type": "string"
+                },
+                "monitorCondition": {
+                  "type": "string"
+                },
+                "monitoringService": {
+                  "type": "string"
+                },
+                "alertTargetIDs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "originAlertId": {
+                  "type": "string"
+                },
+                "firedDateTime": {
+                  "type": "string"
+                },
+                "resolvedDateTime": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "essentialsVersion": {
+                  "type": "string"
+                },
+                "alertContextVersion": {
+                  "type": "string"
+                }
+              }
+            },
+            "alertContext": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "runAfter": {}
+}
+  BODY
+}
