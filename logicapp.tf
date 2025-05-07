@@ -218,3 +218,20 @@ resource "azurerm_logic_app_action_custom" "aiops_read_resource" {
     }
 BODY
 }
+
+resource "azurerm_logic_app_action_custom" "aiops_compose_alert" {
+  name         = "Compose alert payload"
+  logic_app_id = azurerm_logic_app_workflow.aiops.id
+
+  body = <<BODY
+    {
+    "type": "Compose",
+    "inputs": "@{union(body('Parse_alert_payload'), json(concat('{\"data\": ', string(union(body('Parse_alert_payload')?['data'], json(concat('{\"customProperties\": ', string(body('Read_a_resource')?['tags']), '}')))), '}')))}",
+    "runAfter": {
+        "Read a resource": [
+        "Succeeded"
+        ]
+    }
+    }
+BODY
+}
