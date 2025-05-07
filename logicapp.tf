@@ -92,78 +92,103 @@ resource "azurerm_logic_app_action_custom" "aiops_parse" {
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
   body = <<BODY
- {
-  "type": "ParseJson",
-  "inputs": {
-    "content": "@triggerBody()",
-    "schema": {
-      "type": "object",
-      "properties": {
-        "schemaId": {
-          "type": "string"
-        },
-        "data": {
-          "type": "object",
-          "properties": {
-            "essentials": {
-              "type": "object",
-              "properties": {
-                "alertId": {
-                  "type": "string"
-                },
-                "alertRule": {
-                  "type": "string"
-                },
-                "severity": {
-                  "type": "string"
-                },
-                "signalType": {
-                  "type": "string"
-                },
-                "monitorCondition": {
-                  "type": "string"
-                },
-                "monitoringService": {
-                  "type": "string"
-                },
-                "alertTargetIDs": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "originAlertId": {
-                  "type": "string"
-                },
-                "firedDateTime": {
-                  "type": "string"
-                },
-                "resolvedDateTime": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "essentialsVersion": {
-                  "type": "string"
-                },
-                "alertContextVersion": {
-                  "type": "string"
-                }
-              }
+    {
+    "type": "ParseJson",
+    "inputs": {
+        "content": "@triggerBody()",
+        "schema": {
+        "type": "object",
+        "properties": {
+            "schemaId": {
+            "type": "string"
             },
-            "alertContext": {
-              "type": "object",
-              "properties": {}
+            "data": {
+            "type": "object",
+            "properties": {
+                "essentials": {
+                "type": "object",
+                "properties": {
+                    "alertId": {
+                    "type": "string"
+                    },
+                    "alertRule": {
+                    "type": "string"
+                    },
+                    "severity": {
+                    "type": "string"
+                    },
+                    "signalType": {
+                    "type": "string"
+                    },
+                    "monitorCondition": {
+                    "type": "string"
+                    },
+                    "monitoringService": {
+                    "type": "string"
+                    },
+                    "alertTargetIDs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                    },
+                    "originAlertId": {
+                    "type": "string"
+                    },
+                    "firedDateTime": {
+                    "type": "string"
+                    },
+                    "resolvedDateTime": {
+                    "type": "string"
+                    },
+                    "description": {
+                    "type": "string"
+                    },
+                    "essentialsVersion": {
+                    "type": "string"
+                    },
+                    "alertContextVersion": {
+                    "type": "string"
+                    }
+                }
+                },
+                "alertContext": {
+                "type": "object",
+                "properties": {}
+                }
             }
-          }
+            }
         }
-      }
+        }
+    },
+    "runAfter": {}
     }
-  },
-  "runAfter": {}
-}
   BODY
+}
+
+resource "azurerm_logic_app_action_custom" "aiops_affected_resource" {
+  name         = "Read a resource"
+  logic_app_id = azurerm_logic_app_workflow.aiops.id
+
+  body = <<BODY
+    {
+    "type": "InitializeVariable",
+    "inputs": {
+        "variables": [
+        {
+            "name": "AffectedResource",
+            "type": "array",
+            "value": "@split(triggerBody()?['data']?['essentials']?['alertTargetIDs'][0], '/')"
+        }
+        ]
+    },
+    "runAfter": {
+        "Parse_alert_payload": [
+        "Succeeded"
+        ]
+    }
+    }
+BODY
 }
 
 resource "azurerm_logic_app_action_custom" "aiops_read_resource" {
@@ -171,25 +196,25 @@ resource "azurerm_logic_app_action_custom" "aiops_read_resource" {
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
   body = <<BODY
-{
-  "type": "ApiConnection",
-  "inputs": {
-    "host": {
-      "connection": {
-        "referenceName": "arm"
-      }
+    {
+    "type": "ApiConnection",
+    "inputs": {
+        "host": {
+        "connection": {
+            "referenceName": "arm"
+        }
+        },
+        "method": "get",
+        "path": "/subscriptions/@{encodeURIComponent(variables('AffectedResource')[2])}/resourcegroups/@{encodeURIComponent(variables('AffectedResource')[4])}/providers/@{encodeURIComponent(variables('AffectedResource')[6])}/@{encodeURIComponent(concat(variables('AffectedResource')[7], '/', variables('AffectedResource')[8]))}",
+        "queries": {
+        "x-ms-api-version": "2021-04-01"
+        }
     },
-    "method": "get",
-    "path": "/subscriptions/@{encodeURIComponent(variables('AffectedResource')[2])}/resourcegroups/@{encodeURIComponent(variables('AffectedResource')[4])}/providers/@{encodeURIComponent(variables('AffectedResource')[6])}/@{encodeURIComponent(concat(variables('AffectedResource')[7], '/', variables('AffectedResource')[8]))}",
-    "queries": {
-      "x-ms-api-version": "2021-04-01"
+    "runAfter": {
+        "AffectedResource": [
+        "Succeeded"
+        ]
     }
-  },
-  "runAfter": {
-    "AffectedResource": [
-      "Succeeded"
-    ]
-  }
-}
+    }
 BODY
 }
