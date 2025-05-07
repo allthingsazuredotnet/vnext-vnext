@@ -92,7 +92,7 @@ resource "azurerm_logic_app_trigger_custom" "aiops_parse" {
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
   body = <<BODY
-  {
+ {
   "type": "ParseJson",
   "inputs": {
     "content": "@triggerBody()",
