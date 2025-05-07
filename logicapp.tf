@@ -235,3 +235,44 @@ resource "azurerm_logic_app_action_custom" "aiops_compose_alert" {
     }
 BODY
 }
+
+resource "azurerm_logic_app_action_custom" "send_payload" {
+  name         = "Send payload to AIOPS"
+  logic_app_id = azurerm_logic_app_workflow.aiops.id
+
+  body = <<BODY
+    {
+    "type": "Http",
+    "inputs": {
+        "uri": "https://iag1test.service-now.com/api/sn_em_connector/em/inbound_event?source=azuremonitor",
+        "method": "POST",
+        "headers": {
+        "typ": "JWT",
+        "alg": "RS256",
+        "x5t": "CNv0OI3RwqlHFEVnaoMAshCH2XE",
+        "kid": "CNv0OI3RwqlHFEVnaoMAshCH2XE",
+        "appidacr": "2"
+        },
+        "body": "@outputs('Compose alert payload')",
+        "authentication": {
+        "type": "ActiveDirectoryOAuth",
+        "authority": "https://sts.windows.net/",
+        "tenant": "8bc3bb99-ff6d-42ef-9b17-1ea52c4db4ed",
+        "audience": "api://fe05437f-c0ee-4c24-a034-532390fb5e2b",
+        "clientId": "fe05437f-c0ee-4c24-a034-532390fb5e2b",
+        "secret": "X5d8Q~knSFEl25rDMLL0pqy5DJolNgcFHiF6fczQ"
+        }
+    },
+    "runAfter": {
+        "Compose alert payload": [
+        "Succeeded"
+        ]
+    },
+    "runtimeConfiguration": {
+        "contentTransfer": {
+        "transferMode": "Chunked"
+        }
+    }
+    }
+BODY
+}
