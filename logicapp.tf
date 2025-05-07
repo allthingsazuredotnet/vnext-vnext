@@ -196,6 +196,7 @@ resource "azurerm_logic_app_action_custom" "aiops_read_resource" {
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
   body = <<BODY
+
     {
     "type": "ApiConnection",
     "inputs": {
