@@ -87,7 +87,7 @@ resource "azurerm_logic_app_trigger_http_request" "aiops_http" {
 }
 
 
-resource "azurerm_logic_app_trigger_custom" "aiops_parse" {
+resource "azurerm_logic_app_action_custom" "aiops_parse" {
   name         = "Parse alert payload"
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
