@@ -183,7 +183,7 @@ resource "azurerm_logic_app_action_custom" "aiops_affected_resource" {
         ]
     },
     "runAfter": {
-        "Parse_alert_payload": [
+        "Parse alert payload": [
         "Succeeded"
         ]
     }
