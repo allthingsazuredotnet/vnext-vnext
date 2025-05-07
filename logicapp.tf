@@ -167,7 +167,7 @@ resource "azurerm_logic_app_action_custom" "aiops_parse" {
 }
 
 resource "azurerm_logic_app_action_custom" "aiops_affected_resource" {
-  name         = "Read a resource"
+  name         = "AffectedResource"
   logic_app_id = azurerm_logic_app_workflow.aiops.id
 
   body = <<BODY
