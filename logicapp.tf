@@ -165,3 +165,31 @@ resource "azurerm_logic_app_action_custom" "aiops_parse" {
 }
   BODY
 }
+
+resource "azurerm_logic_app_action_custom" "aiops_parse" {
+  name         = "Read a resource"
+  logic_app_id = azurerm_logic_app_workflow.aiops.id
+
+  body = <<BODY
+{
+  "type": "ApiConnection",
+  "inputs": {
+    "host": {
+      "connection": {
+        "referenceName": "arm"
+      }
+    },
+    "method": "get",
+    "path": "/subscriptions/@{encodeURIComponent(variables('AffectedResource')[2])}/resourcegroups/@{encodeURIComponent(variables('AffectedResource')[4])}/providers/@{encodeURIComponent(variables('AffectedResource')[6])}/@{encodeURIComponent(concat(variables('AffectedResource')[7], '/', variables('AffectedResource')[8]))}",
+    "queries": {
+      "x-ms-api-version": "2021-04-01"
+    }
+  },
+  "runAfter": {
+    "AffectedResource": [
+      "Succeeded"
+    ]
+  }
+}
+BODY
+}
