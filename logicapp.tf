@@ -226,7 +226,7 @@ resource "azurerm_logic_app_action_custom" "aiops_compose_alert" {
   body = <<BODY
     {
     "type": "Compose",
-    "inputs": "@{union(body('Parse_alert_payload'), json(concat('{\"data\": ', string(union(body('Parse_alert_payload')?['data'], json(concat('{\"customProperties\": ', string(body('Read_a_resource')?['tags']), '}')))), '}')))}",
+    "inputs": "@{union(body('Parse alert payload'), json(concat('{\"data\": ', string(union(body('Parse alert payload')?['data'], json(concat('{\"customProperties\": ', string(body('Read a resource')?['tags']), '}')))), '}')))}",
     "runAfter": {
         "Read a resource": [
         "Succeeded"
