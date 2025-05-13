@@ -20,7 +20,7 @@ resource "azurerm_resource_group" "aiops_container" {
 }
 
 resource "azurerm_container_registry" "acr" {
-  name                = "cae-${random_string.suffix.result}" # Appending random string for uniqueness
+  name                = "caeiagtst${random_string.suffix.result}" # Appending random string for uniqueness
   location            = azurerm_resource_group.aiops_container.location
   resource_group_name = azurerm_resource_group.aiops_container.name
   sku                 = "Basic"
