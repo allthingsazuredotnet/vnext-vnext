@@ -124,9 +124,9 @@ resource "azurerm_container_app" "aiops_payload" {
     type = "SystemAssigned"
   }
   secret {
-    name                = "my-kv-secret"
- #   key_vault_secret_id = azurerm_key_vault_secret.kv.id                               // Assuming you have a Key Vault secret resource
-    identity            = azurerm_container_app.aiops_payload.identity[0].principal_id // Or specify a user-assigned identity
+    name = "my-kv-secret"
+    #   key_vault_secret_id = azurerm_key_vault_secret.kv.id                               // Assuming you have a Key Vault secret resource
+    identity = azurerm_container_app.aiops_payload.identity[0].principal_id // Or specify a user-assigned identity
   }
 
   tags = {
