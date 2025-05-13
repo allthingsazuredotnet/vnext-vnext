@@ -131,11 +131,6 @@ def webhook_trigger():
             return jsonify({"error": "Failed to acquire ServiceNow access token"}), 500
 
         headers_to_servicenow = {
-            "typ": "JWT",
-            "alg": "RS256",
-            "x5t": "CNv0OI3RwqlHFEVnaoMAshCH2XE",
-            "kid": "CNv0OI3RwqlHFEVnaoMAshCH2XE",
-            "appidacr": "2",
             "Authorization": f"Bearer {servicenow_token}",
             "Content-Type": "application/json"
         }
