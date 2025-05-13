@@ -1,0 +1,7 @@
+flask
+requests
+azure-identity
+azure-mgmt-resource
+azure-keyvault-secrets
+msal
+gunicorn
