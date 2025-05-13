@@ -114,20 +114,20 @@ resource "azurerm_container_app" "aiops_payload" {
 
   // Optional: Define secrets that can be referenced by env vars
   // These secrets can be sourced from Key Vault or be simple string values
-  secret {
-    name  = "my-secret-name-in-container-app"
-    value = "this-is-a-plain-text-secret" // For Key Vault, you'd use key_vault_secret_id and identity
-  }
+  #   secret {
+  #     name  = "my-secret-name-in-container-app"
+  #     value = "this-is-a-plain-text-secret" // For Key Vault, you'd use key_vault_secret_id and identity
+  #   }
 
-  // Example for Key Vault secret (requires managed identity on the Container App)
-  // identity {
-  //   type = "SystemAssigned"
-  // }
-  // secret {
-  //   name                  = "my-kv-secret"
-  //   key_vault_secret_id   = azurerm_key_vault_secret.example.id // Assuming you have a Key Vault secret resource
-  //   identity              = azurerm_container_app.example_app.identity[0].principal_id // Or specify a user-assigned identity
-  // }
+  # Example for Key Vault secret (requires managed identity on the Container App)
+  identity {
+    type = "SystemAssigned"
+  }
+  secret {
+    name                = "my-kv-secret"
+    key_vault_secret_id = azurerm_key_vault_secret.kv.id                        // Assuming you have a Key Vault secret resource
+    identity            = azurerm_container_app.aiops_payload.identity[0].principal_id // Or specify a user-assigned identity
+  }
 
   tags = {
     environment = "development"
