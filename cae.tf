@@ -19,6 +19,19 @@ resource "azurerm_resource_group" "aiops_container" {
   location = local.location
 }
 
+resource "azurerm_container_registry" "acr" {
+  name                = "cae-${random_string.acr_suffix.result}" # Appending random string for uniqueness
+  location            = azurerm_resource_group.aiops_container.location
+  resource_group_name = azurerm_resource_group.aiops_container.name
+  sku                 = "basic"
+  admin_enabled       = true # Set to false if you plan to use token-based auth or managed identities exclusively
+
+  tags = {
+    environment = "development" # Or your desired environment
+    project     = "aiops"
+  }
+}
+
 resource "azurerm_key_vault" "kv" {
   name                       = local.key_vault_name
   location                   = azurerm_resource_group.aiops_container.location
