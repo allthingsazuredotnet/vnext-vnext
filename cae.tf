@@ -26,6 +26,10 @@ resource "azurerm_container_registry" "acr" {
   sku                 = "Basic"
   admin_enabled       = true # Set to false if you plan to use token-based auth or managed identities exclusively
 
+identity {
+    type = "SystemAssigned" # Use System Assigned Managed Identity
+  }
+
   tags = {
     environment = "development" # Or your desired environment
     project     = "aiops"
@@ -38,6 +42,7 @@ resource "azurerm_key_vault" "kv" {
   resource_group_name        = azurerm_resource_group.aiops_container.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   sku_name                   = "standard" # Or "premium"
+  enable_rbac_authorization  = true
   soft_delete_retention_days = 7
   purge_protection_enabled   = false # Set to true for production environments
 
@@ -96,18 +101,18 @@ resource "azurerm_container_app" "aiops_payload" {
       }
 
       env {
-        name        = "AZURE_KEY_VAULT_URI"
-        secret_name = "kv-aiops-szdw" // This references a secret defined in the 'secret' block below
+        name  = "AZURE_KEY_VAULT_URI"
+        value = "kv-aiops-szdw" // This references a secret defined in the 'secret' block below
+      }
+
+      env {
+        name  = "SN_AUTH_AUDIENCE"
+        value = "api://fe05437f-c0ee-4c24-a034-532390fb5e2b" // This references a secret defined in the 'secret' block below
       }
 
       env {
         name        = "SN_AUTH_CLIENT_ID_SECRET_NAME"
         secret_name = "SN_AUTH_CLIENT_ID_SECRET_NAME" // This references a secret defined in the 'secret' block below
-      }
-
-      env {
-        name        = "SN_AUTH_AUDIENCE"
-        secret_name = "api://fe05437f-c0ee-4c24-a034-532390fb5e2b" // This references a secret defined in the 'secret' block below
       }
     }
   }
@@ -124,9 +129,9 @@ resource "azurerm_container_app" "aiops_payload" {
     type = "SystemAssigned"
   }
   secret {
-    name = "my-kv-secret"
-    #   key_vault_secret_id = azurerm_key_vault_secret.kv.id                               // Assuming you have a Key Vault secret resource
-    #   identity = azurerm_container_app.aiops_payload.identity[0].principal_id // Or specify a user-assigned identity
+    name                = "my-kv-secret"
+    key_vault_secret_id = "${azurerm_key_vault_secret.kv.id}/secrets/my-kv-secret"     // Assuming you have a Key Vault secret resource
+    identity            = azurerm_container_app.aiops_payload.identity[0].principal_id // Or specify a user-assigned identity
   }
 
   tags = {
