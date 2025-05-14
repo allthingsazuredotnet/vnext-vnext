@@ -164,6 +164,18 @@ resource "azurerm_container_app" "aiops_payload" {
     }
   }
 
+  ingress {
+    external_enabled           = true   // Makes the app accessible from the internet
+    target_port                = 5000   // Replace with the port your container application listens on
+    transport                  = "http" // ACA handles TLS termination; your app receives HTTP traffic on target_port
+    allow_insecure_connections = false  // Default is false, ensures HTTPS only
+
+    traffic_weight {
+      percentage      = 100
+      latest_revision = true // Direct all traffic to the latest stable revision
+    }
+  }
+
   // Optional: Define secrets that can be referenced by env vars
   // These secrets can be sourced from Key Vault or be simple string values
   #   secret {
