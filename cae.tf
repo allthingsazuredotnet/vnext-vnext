@@ -52,6 +52,12 @@ resource "azurerm_key_vault" "kv" {
   }
 }
 
+resource "azurerm_role_assignment" "container_app_kv_secret_user" {
+  scope                = azurerm_key_vault.kv.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_container_app.aiops_payload.identity[0].principal_id // Assuming aiops_payload is your container app
+}
+
 resource "azurerm_log_analytics_workspace" "law" {
   name                = local.log_analytics_workspace_name
   location            = azurerm_resource_group.aiops_container.location
@@ -117,6 +123,9 @@ resource "azurerm_container_app" "aiops_payload" {
     }
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
   // Optional: Define secrets that can be referenced by env vars
   // These secrets can be sourced from Key Vault or be simple string values
   #   secret {
@@ -125,12 +134,10 @@ resource "azurerm_container_app" "aiops_payload" {
   #   }
 
   # Example for Key Vault secret (requires managed identity on the Container App)
-  identity {
-    type = "SystemAssigned"
-  }
+
   secret {
     name                = "my-kv-secret"
-    key_vault_secret_id = "${azurerm_key_vault_secret.kv.id}/secrets/my-kv-secret"     // Assuming you have a Key Vault secret resource
+    key_vault_secret_id = "${azurerm_key_vault.kv.vault_uri}/secrets/my-kv-secret"     // Assuming you have a Key Vault secret resource
     identity            = azurerm_container_app.aiops_payload.identity[0].principal_id // Or specify a user-assigned identity
   }
 
