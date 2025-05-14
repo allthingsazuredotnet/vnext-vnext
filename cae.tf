@@ -26,6 +26,10 @@ resource "azurerm_container_registry" "acr" {
   sku                 = "Basic"
   admin_enabled       = true # Set to false if you plan to use token-based auth or managed identities exclusively
 
+  identity {
+    type = "SystemAssigned" # Use System Assigned Managed Identity
+  }
+
   tags = {
     environment = "development" # Or your desired environment
     project     = "aiops"
@@ -38,6 +42,7 @@ resource "azurerm_key_vault" "kv" {
   resource_group_name        = azurerm_resource_group.aiops_container.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   sku_name                   = "standard" # Or "premium"
+  enable_rbac_authorization  = true
   soft_delete_retention_days = 7
   purge_protection_enabled   = false # Set to true for production environments
 
@@ -45,6 +50,23 @@ resource "azurerm_key_vault" "kv" {
     environment = "development"
     project     = "aiops"
   }
+}
+
+resource "azurerm_user_assigned_identity" "container_app_identity" {
+  name                = "uai-aiops-payload" // Choose a suitable name
+  resource_group_name = azurerm_resource_group.aiops_container.name
+  location            = azurerm_resource_group.aiops_container.location
+
+  tags = {
+    environment = "development"
+    project     = "aiops"
+  }
+}
+
+resource "azurerm_role_assignment" "container_app_kv_secret_user" {
+  scope                = azurerm_key_vault.kv.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.container_app_identity.principal_id // Use User-Assigned Identi
 }
 
 resource "azurerm_log_analytics_workspace" "law" {
@@ -96,22 +118,26 @@ resource "azurerm_container_app" "aiops_payload" {
       }
 
       env {
-        name        = "AZURE_KEY_VAULT_URI"
-        secret_name = "kv-aiops-szdw" // This references a secret defined in the 'secret' block below
+        name  = "AZURE_KEY_VAULT_URI"
+        value = "kv-aiops-szdw" // This references a secret defined in the 'secret' block below
+      }
+
+      env {
+        name  = "SN_AUTH_AUDIENCE"
+        value = "api://fe05437f-c0ee-4c24-a034-532390fb5e2b" // This references a secret defined in the 'secret' block below
       }
 
       env {
         name        = "SN_AUTH_CLIENT_ID_SECRET_NAME"
         secret_name = "SN_AUTH_CLIENT_ID_SECRET_NAME" // This references a secret defined in the 'secret' block below
       }
-
-      env {
-        name        = "SN_AUTH_AUDIENCE"
-        secret_name = "api://fe05437f-c0ee-4c24-a034-532390fb5e2b" // This references a secret defined in the 'secret' block below
-      }
     }
   }
 
+  identity {
+    type         = "UserAssigned" // Changed to UserAssigned (can also be "SystemAssigned, UserAssigned")
+    identity_ids = [azurerm_user_assigned_identity.container_app_identity.id]
+  }
   // Optional: Define secrets that can be referenced by env vars
   // These secrets can be sourced from Key Vault or be simple string values
   #   secret {
@@ -120,13 +146,11 @@ resource "azurerm_container_app" "aiops_payload" {
   #   }
 
   # Example for Key Vault secret (requires managed identity on the Container App)
-  identity {
-    type = "SystemAssigned"
-  }
+
   secret {
-    name = "my-kv-secret"
-    #   key_vault_secret_id = azurerm_key_vault_secret.kv.id                               // Assuming you have a Key Vault secret resource
-    #   identity = azurerm_container_app.aiops_payload.identity[0].principal_id // Or specify a user-assigned identity
+    name                = "my-kv-secret"
+    key_vault_secret_id = "${azurerm_key_vault.kv.vault_uri}secrets/my-kv-secret"  // Assuming you have a Key Vault secret resource
+    identity            = azurerm_user_assigned_identity.container_app_identity.id // Use User-Assigned Identity's ID
   }
 
   tags = {
