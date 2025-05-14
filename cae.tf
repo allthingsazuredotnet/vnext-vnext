@@ -156,7 +156,6 @@ resource "azurerm_container_app" "aiops_payload" {
 
   ingress {
     target_port                = 5000 // Replace with the port your container application listens on
-    exposed_port               = 443
     transport                  = "http" // ACA handles TLS termination; your app receives HTTP traffic on target_port
     allow_insecure_connections = false  // Default is false, ensures HTTPS only
 
