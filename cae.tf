@@ -52,10 +52,21 @@ resource "azurerm_key_vault" "kv" {
   }
 }
 
+resource "azurerm_user_assigned_identity" "container_app_identity" {
+  name                = "uai-aiops-payload" // Choose a suitable name
+  resource_group_name = azurerm_resource_group.aiops_container.name
+  location            = azurerm_resource_group.aiops_container.location
+
+  tags = {
+    environment = "development"
+    project     = "aiops"
+  }
+}
+
 resource "azurerm_role_assignment" "container_app_kv_secret_user" {
   scope                = azurerm_key_vault.kv.id
   role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_container_app.aiops_payload.identity[0].principal_id // Assuming aiops_payload is your container app
+  principal_id         = azurerm_user_assigned_identity.container_app_identity.principal_id // Use User-Assigned Identi
 }
 
 resource "azurerm_log_analytics_workspace" "law" {
@@ -124,7 +135,8 @@ resource "azurerm_container_app" "aiops_payload" {
   }
 
   identity {
-    type = "SystemAssigned"
+    type         = "UserAssigned" // Changed to UserAssigned (can also be "SystemAssigned, UserAssigned")
+    identity_ids = [azurerm_user_assigned_identity.container_app_identity.id]
   }
   // Optional: Define secrets that can be referenced by env vars
   // These secrets can be sourced from Key Vault or be simple string values
@@ -138,7 +150,7 @@ resource "azurerm_container_app" "aiops_payload" {
   secret {
     name                = "my-kv-secret"
     key_vault_secret_id = "${azurerm_key_vault.kv.vault_uri}secrets/my-kv-secret" // Assuming you have a Key Vault secret resource
-    //identity            = azurerm_container_app.aiops_payload.identity[0].principal_id // Or specify a user-assigned identity
+    identity            = azurerm_user_assigned_identity.container_app_identity.id // Use User-Assigned Identity's ID
   }
 
   tags = {
