@@ -152,6 +152,8 @@ resource "azurerm_container_app" "aiops_payload" {
         secret_name = "sn-auth-client-id-secret-name" // This references a secret defined in the 'secret' block below
       }
     }
+    min_replicas = 1
+    max_replicas = 1
   }
 
   ingress {
