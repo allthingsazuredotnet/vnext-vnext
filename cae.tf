@@ -129,7 +129,7 @@ resource "azurerm_container_app" "aiops_payload" {
 
       env {
         name        = "SN_AUTH_CLIENT_ID_SECRET_NAME"
-        secret_name = "SN_AUTH_CLIENT_ID_SECRET_NAME" // This references a secret defined in the 'secret' block below
+        secret_name = "sn-auth-client-id-secret-name" // This references a secret defined in the 'secret' block below
       }
     }
   }
@@ -148,7 +148,7 @@ resource "azurerm_container_app" "aiops_payload" {
   # Example for Key Vault secret (requires managed identity on the Container App)
 
   secret {
-    name                = "my-kv-secret"
+    name                = "sn-auth-client-id-secret-name"
     key_vault_secret_id = "${azurerm_key_vault.kv.vault_uri}secrets/my-kv-secret"  // Assuming you have a Key Vault secret resource
     identity            = azurerm_user_assigned_identity.container_app_identity.id // Use User-Assigned Identity's ID
   }
