@@ -69,6 +69,12 @@ resource "azurerm_role_assignment" "container_app_kv_secret_user" {
   principal_id         = azurerm_user_assigned_identity.container_app_identity.principal_id // Use User-Assigned Identi
 }
 
+resource "azurerm_role_assignment" "container_app_acr_pull" {
+  scope                = azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_user_assigned_identity.container_app_identity.principal_id
+}
+
 resource "azurerm_log_analytics_workspace" "law" {
   name                = local.log_analytics_workspace_name
   location            = azurerm_resource_group.aiops_container.location
