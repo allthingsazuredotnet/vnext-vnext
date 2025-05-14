@@ -107,6 +107,16 @@ resource "azurerm_container_app" "aiops_payload" {
   resource_group_name          = azurerm_resource_group.aiops_container.name
   revision_mode                = "Single"
 
+  registry {
+    server   = azurerm_container_registry.acr.login_server
+    identity = azurerm_user_assigned_identity.container_app_identity.id
+  }
+
+  identity {
+    type         = "UserAssigned" // Changed to UserAssigned (can also be "SystemAssigned, UserAssigned")
+    identity_ids = [azurerm_user_assigned_identity.container_app_identity.id]
+  }
+
   template {
     container {
       name   = "aiops"
@@ -141,10 +151,6 @@ resource "azurerm_container_app" "aiops_payload" {
     }
   }
 
-  identity {
-    type         = "UserAssigned" // Changed to UserAssigned (can also be "SystemAssigned, UserAssigned")
-    identity_ids = [azurerm_user_assigned_identity.container_app_identity.id]
-  }
   // Optional: Define secrets that can be referenced by env vars
   // These secrets can be sourced from Key Vault or be simple string values
   #   secret {
