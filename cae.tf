@@ -27,7 +27,8 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled       = true # Set to false if you plan to use token-based auth or managed identities exclusively
 
   identity {
-    type = "SystemAssigned" # Use System Assigned Managed Identity
+    type         = "UserAssigned"
+    identity_ids = [azurerm_user_assigned_identity.container_app_identity.id]
   }
 
   tags = {
