@@ -149,10 +149,11 @@ resource "azurerm_container_app" "aiops_payload" {
         secret_name = "sn-auth-client-id-secret-name" // This references a secret defined in the 'secret' block below
       }
     }
+    min_replicas = 1
+    max_replicas = 1
   }
 
   ingress {
-    external_enabled           = true   // Makes the app accessible from the internet
     target_port                = 5000   // Replace with the port your container application listens on
     transport                  = "http" // ACA handles TLS termination; your app receives HTTP traffic on target_port
     allow_insecure_connections = false  // Default is false, ensures HTTPS only
