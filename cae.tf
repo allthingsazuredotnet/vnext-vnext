@@ -149,7 +149,7 @@ resource "azurerm_container_app" "aiops_payload" {
 
   secret {
     name                = "my-kv-secret"
-    key_vault_secret_id = "${azurerm_key_vault.kv.vault_uri}secrets/my-kv-secret" // Assuming you have a Key Vault secret resource
+    key_vault_secret_id = "${azurerm_key_vault.kv.vault_uri}secrets/my-kv-secret"  // Assuming you have a Key Vault secret resource
     identity            = azurerm_user_assigned_identity.container_app_identity.id // Use User-Assigned Identity's ID
   }
 
