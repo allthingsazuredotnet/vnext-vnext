@@ -102,7 +102,7 @@ resource "azurerm_container_app_environment" "cae" {
 }
 
 resource "azurerm_container_app" "aiops_payload" {
-  name                         = "my-example-container-app"
+  name                         = "aiops-payload" // Choose a suitable name
   container_app_environment_id = azurerm_container_app_environment.cae.id
   resource_group_name          = azurerm_resource_group.aiops_container.name
   revision_mode                = "Single"
@@ -118,6 +118,9 @@ resource "azurerm_container_app" "aiops_payload" {
   }
 
   template {
+    min_replicas = 1
+    max_replicas = 1
+
     container {
       name   = "aiops"
       image  = "${azurerm_container_registry.acr.login_server}/aiops:latest" // Replace with your actual image
@@ -149,8 +152,6 @@ resource "azurerm_container_app" "aiops_payload" {
         secret_name = "sn-auth-client-id-secret-name" // This references a secret defined in the 'secret' block below
       }
     }
-    min_replicas = 1
-    max_replicas = 1
   }
 
   ingress {
